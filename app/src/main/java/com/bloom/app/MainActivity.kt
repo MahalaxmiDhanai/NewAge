@@ -2,6 +2,7 @@ package com.bloom.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -24,6 +25,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             BloomTheme {
                 val navController = rememberNavController()
+                
+                // Handle system back button
+                BackHandler {
+                    if (!navController.popBackStack()) {
+                        finish()
+                    }
+                }
+                
                 NavGraph(
                     navController    = navController,
                     userRepository   = app.userRepository,
