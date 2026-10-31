@@ -4,16 +4,22 @@
     android:height="48dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+    <!-- Cream background -->
     <path android:fillColor="#FCFAF8"
         android:pathData="M0,0 L108,0 L108,108 L0,108 Z"/>
+    <!-- Top petal -->
     <path android:fillColor="#A8564F"
-        android:pathData="M54,54 C54,54 42,42 42,32 C42,24.3 47.4,18 54,18 C60.6,18 66,24.3 66,32 C66,42 54,54 54,54 Z"/>
+        android:pathData="M54,19 C58.6,19 62.4,24.3 62.4,30.8 C62.4,37.3 58.6,42.6 54,42.6 C49.4,42.6 45.6,37.3 45.6,30.8 C45.6,24.3 49.4,19 54,19 Z"/>
+    <!-- Bottom petal -->
     <path android:fillColor="#A8564F"
-        android:pathData="M54,54 C54,54 66,66 66,76 C66,83.7 60.6,90 54,90 C47.4,90 42,83.7 42,76 C42,66 54,54 54,54 Z"/>
+        android:pathData="M54,65.4 C58.6,65.4 62.4,70.7 62.4,77.2 C62.4,83.7 58.6,89 54,89 C49.4,89 45.6,83.7 45.6,77.2 C45.6,70.7 49.4,65.4 54,65.4 Z"/>
+    <!-- Left petal -->
     <path android:fillColor="#A8564F"
-        android:pathData="M54,54 C54,54 42,42 32,42 C24.3,42 18,47.4 18,54 C18,60.6 24.3,66 32,66 C42,66 54,54 54,54 Z"/>
+        android:pathData="M19,54 C19,49.4 24.3,45.6 30.8,45.6 C37.3,45.6 42.6,49.4 42.6,54 C42.6,58.6 37.3,62.4 30.8,62.4 C24.3,62.4 19,58.6 19,54 Z"/>
+    <!-- Right petal -->
     <path android:fillColor="#A8564F"
-        android:pathData="M54,54 C54,54 66,42 76,42 C83.7,42 90,47.4 90,54 C90,60.6 83.7,66 76,66 C66,66 54,54 54,54 Z"/>
+        android:pathData="M65.4,54 C65.4,49.4 70.7,45.6 77.2,45.6 C83.7,45.6 89,49.4 89,54 C89,58.6 83.7,62.4 77.2,62.4 C70.7,62.4 65.4,58.6 65.4,54 Z"/>
+    <!-- Gold center -->
     <path android:fillColor="#B8843A"
-        android:pathData="M54,43 A11,11,0,1,1,53.999,43 Z"/>
+        android:pathData="M54,46 A8,8,0,1,1,53.999,46 Z"/>
 </vector>

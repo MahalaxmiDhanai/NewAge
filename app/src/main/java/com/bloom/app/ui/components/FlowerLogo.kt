@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -21,96 +20,138 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 /**
- * Bloom flower drawn entirely on Compose Canvas.
- * 4 rounded petals (brick-red) + gold center circle.
- * [showGlow] adds a soft pink radial glow behind the flower.
+ * Bloom flower logo — matches Figma exactly.
+ *
+ * The Figma logo (512×512) shows:
+ *  - Top/bottom petals: tall vertical ovals, more elongated height-wise
+ *  - Left/right petals: wide horizontal ovals, more elongated width-wise
+ *  - Petals interlock at center — large overlap
+ *  - Gold center circle ~22% of flower radius
+ *  - Soft pink radial glow tightly hugging the petals
+ *
+ * [size] = diameter of the flower body (excluding glow).
+ * [showGlow] = whether to draw the radial glow (splash + onboarding step 1).
  */
 @Composable
 fun FlowerLogo(
-    size: Dp       = 120.dp,
+    size: Dp = 120.dp,
     showGlow: Boolean = true,
     modifier: Modifier = Modifier
 ) {
-    val glowMultiplier = if (showGlow) 2.2f else 1f
-    val canvasSize     = size * glowMultiplier
+    // Give the canvas extra room for the glow halo
+    val glowPadding = if (showGlow) size * 0.65f else 0.dp
+    val canvasSize  = size + glowPadding * 2f
 
     Canvas(modifier = modifier.size(canvasSize)) {
         val cx = this.size.width  / 2f
         val cy = this.size.height / 2f
-        val flowerR = (size.toPx()) / 2f
+        val r  = size.toPx() / 2f   // flower radius
 
-        // ── Radial glow ────────────────────────────────────────────────────
+        // ── Radial glow — tight pink halo around the flower ──────────────
         if (showGlow) {
+            val glowR = r * 1.55f
             drawCircle(
-                brush  = Brush.radialGradient(
-                    colors  = listOf(LightPink.copy(alpha = 0.55f), LightPink.copy(alpha = 0f)),
-                    center  = Offset(cx, cy),
-                    radius  = this.size.minDimension / 2f
+                brush = Brush.radialGradient(
+                    colorStops = arrayOf(
+                        0.0f to LightPink.copy(alpha = 0.45f),
+                        0.55f to LightPink.copy(alpha = 0.20f),
+                        1.0f to LightPink.copy(alpha = 0.0f)
+                    ),
+                    center = Offset(cx, cy),
+                    radius = glowR
                 ),
-                radius = this.size.minDimension / 2f,
+                radius = glowR,
                 center = Offset(cx, cy)
             )
         }
 
-        // ── 4 petals ───────────────────────────────────────────────────────
-        val petalW = flowerR * 0.52f
-        val petalH = flowerR * 0.90f
-        val offset = petalH * 0.48f
+        // ── Petal geometry ────────────────────────────────────────────────
+        //
+        // Figma shows asymmetric petals:
+        //   Vertical petals (top/bottom): halfW = 0.42r, halfH = 0.78r
+        //   Horizontal petals (left/right): halfW = 0.78r, halfH = 0.42r
+        //
+        // Center offset (how far petal centre is from flower centre): 0.38r
+        // This creates the interlocking overlap seen in the Figma.
 
-        for (i in 0 until 4) {
-            val angle = Math.toRadians((i * 90.0)).toFloat()
-            drawPetal(
-                cx = cx + sin(angle) * offset,
-                cy = cy - cos(angle) * offset,
-                halfW = petalW,
-                halfH = petalH,
-                color = PrimaryBrickRed
-            )
-        }
+        val vertHalfW = r * 0.42f
+        val vertHalfH = r * 0.78f
+        val horizHalfW = r * 0.78f
+        val horizHalfH = r * 0.42f
+        val petalOffset = r * 0.38f
 
-        // ── Gold center ────────────────────────────────────────────────────
-        val centerR = flowerR * 0.28f
+        // Top petal
+        drawOvalPetal(
+            cx = cx, cy = cy - petalOffset,
+            halfW = vertHalfW, halfH = vertHalfH,
+            color = PrimaryBrickRed
+        )
+        // Bottom petal
+        drawOvalPetal(
+            cx = cx, cy = cy + petalOffset,
+            halfW = vertHalfW, halfH = vertHalfH,
+            color = PrimaryBrickRed
+        )
+        // Left petal
+        drawOvalPetal(
+            cx = cx - petalOffset, cy = cy,
+            halfW = horizHalfW, halfH = horizHalfH,
+            color = PrimaryBrickRed
+        )
+        // Right petal
+        drawOvalPetal(
+            cx = cx + petalOffset, cy = cy,
+            halfW = horizHalfW, halfH = horizHalfH,
+            color = PrimaryBrickRed
+        )
+
+        // ── Gold center circle ────────────────────────────────────────────
         drawCircle(
             color  = Gold,
-            radius = centerR,
+            radius = r * 0.26f,
             center = Offset(cx, cy)
         )
     }
 }
 
 /**
- * Draw a single rounded petal centred at (cx, cy) using a cubic bezier path.
- * The petal is axis-aligned (vertical). Rotate the caller's coordinate frame
- * externally if needed.
+ * Draw an ellipse (oval petal) centered at (cx, cy) using a cubic bezier
+ * approximation — gives the smooth rounded petal look from the Figma.
+ * κ = 0.5523 is the standard circle-to-bezier constant.
  */
-private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawPetal(
+private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawOvalPetal(
     cx: Float, cy: Float,
     halfW: Float, halfH: Float,
     color: Color
 ) {
-    val cp = halfW * 1.35f      // control point spread
+    val k = 0.5523f
+    val kw = halfW * k
+    val kh = halfH * k
+
     val path = Path().apply {
-        moveTo(cx, cy + halfH)
-        cubicTo(cx + cp, cy + halfH, cx + halfW, cy, cx, cy - halfH)
-        cubicTo(cx - halfW, cy, cx - cp, cy + halfH, cx, cy + halfH)
+        moveTo(cx, cy - halfH)
+        cubicTo(cx + kw, cy - halfH,   cx + halfW, cy - kh,   cx + halfW, cy)
+        cubicTo(cx + halfW, cy + kh,   cx + kw, cy + halfH,   cx, cy + halfH)
+        cubicTo(cx - kw, cy + halfH,   cx - halfW, cy + kh,   cx - halfW, cy)
+        cubicTo(cx - halfW, cy - kh,   cx - kw, cy - halfH,   cx, cy - halfH)
         close()
     }
     drawPath(path = path, color = color)
 }
 
-// ── 4-point sparkle ─────────────────────────────────────────────────────────
+// ── 4-point sparkle ──────────────────────────────────────────────────────────
 
 @Composable
 fun FourPointSparkle(
-    size: Dp       = 12.dp,
-    color: Color   = Gold,
+    size: Dp     = 12.dp,
+    color: Color = Gold,
     modifier: Modifier = Modifier
 ) {
     Canvas(modifier = modifier.size(size)) {
         val cx    = this.size.width  / 2f
         val cy    = this.size.height / 2f
         val outer = this.size.minDimension / 2f
-        val inner = outer * 0.15f
+        val inner = outer * 0.18f
 
         val path = Path()
         for (i in 0 until 8) {
@@ -129,6 +170,14 @@ fun FourPointSparkle(
 @Composable
 private fun FlowerLogoPreview() {
     Box(modifier = Modifier.size(300.dp), contentAlignment = Alignment.Center) {
-        FlowerLogo(size = 120.dp, showGlow = true)
+        FlowerLogo(size = 130.dp, showGlow = true)
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFCFAF8)
+@Composable
+private fun FlowerLogoNoGlowPreview() {
+    Box(modifier = Modifier.size(200.dp), contentAlignment = Alignment.Center) {
+        FlowerLogo(size = 130.dp, showGlow = false)
     }
 }

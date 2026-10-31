@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -17,9 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -57,14 +53,15 @@ import com.bloom.app.ui.home.components.TodayGoalsCard
 import com.bloom.app.ui.home.components.TodayTipCard
 import com.bloom.app.ui.theme.BackgroundCream
 import com.bloom.app.ui.theme.BloomTheme
-import com.bloom.app.ui.theme.CardShape
 import com.bloom.app.ui.theme.DarkText
 import com.bloom.app.ui.theme.Dimens
 import com.bloom.app.ui.theme.LightPink
 import com.bloom.app.ui.theme.MutedGrey
 import com.bloom.app.ui.theme.SansFont
 import com.bloom.app.ui.theme.SerifFont
-import com.bloom.app.ui.theme.White
+
+// Figma gap between sections = 14dp
+private val SectionGap = 14.dp
 
 @Composable
 fun HomeScreen(
@@ -84,7 +81,6 @@ fun HomeScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     var selectedNavIndex by rememberSaveable { mutableIntStateOf(0) }
 
-    // Show snackbar
     LaunchedEffect(state.snackbarMessage) {
         state.snackbarMessage?.let {
             snackbarHostState.showSnackbar(it)
@@ -93,11 +89,11 @@ fun HomeScreen(
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost   = { SnackbarHost(snackbarHostState) },
         containerColor = BackgroundCream,
         bottomBar = {
             Column {
-                // Banner ad slot — above nav bar, collapses if no ad
+                // Banner ad — collapses when no ad loaded
                 BannerAdView(
                     adUnitId  = AdConfig.BANNER_AD_UNIT_ID,
                     analytics = LogcatAdAnalytics(),
@@ -114,19 +110,14 @@ fun HomeScreen(
     ) { innerPadding ->
         when (selectedNavIndex) {
             0 -> DashboardContent(
-                state    = state,
-                onGoalTap = { viewModel.incrementGoal(it) },
+                state         = state,
+                onGoalTap     = { viewModel.incrementGoal(it) },
                 onRemindLater = { viewModel.hideTip() },
                 onMarkAsDone  = { viewModel.markSleepDone() },
-                modifier = Modifier.padding(innerPadding)
+                modifier      = Modifier.padding(innerPadding)
             )
             else -> PlaceholderScreen(
-                title    = when (selectedNavIndex) {
-                    1 -> "Insights"
-                    2 -> "Learn"
-                    3 -> "Settings"
-                    else -> ""
-                },
+                title    = when (selectedNavIndex) { 1 -> "Insights"; 2 -> "Learn"; 3 -> "Settings"; else -> "" },
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -147,10 +138,10 @@ private fun DashboardContent(
             .background(BackgroundCream)
             .statusBarsPadding()
     ) {
-        // ── Header ──────────────────────────────────────────────────────────
+        // ── Header ──────────────────────────────────────────────────────
         item {
             Row(
-                modifier          = Modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(
                         horizontal = Dimens.ScreenPaddingH,
@@ -160,12 +151,12 @@ private fun DashboardContent(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text       = "GOOD MORNING,",
-                        fontFamily = SansFont,
-                        fontWeight = FontWeight.Normal,
-                        color      = MutedGrey,
-                        fontSize   = 11.sp,
-                        letterSpacing = 1.sp
+                        text          = "GOOD MORNING,",
+                        fontFamily    = SansFont,
+                        fontWeight    = FontWeight.Normal,
+                        color         = MutedGrey,
+                        fontSize      = 11.sp,
+                        letterSpacing = 1.2.sp
                     )
                     Text(
                         text       = state.userName,
@@ -173,26 +164,27 @@ private fun DashboardContent(
                         fontWeight = FontWeight.Bold,
                         fontStyle  = FontStyle.Italic,
                         color      = DarkText,
-                        fontSize   = 24.sp
+                        fontSize   = 22.sp
                     )
                 }
                 IconButton(
                     onClick  = {},
                     modifier = Modifier
-                        .size(44.dp)
+                        .size(40.dp)
                         .clip(CircleShape)
                         .background(LightPink)
                 ) {
                     Icon(
                         imageVector        = Icons.Filled.Person,
                         contentDescription = "Profile",
-                        tint               = DarkText.copy(alpha = 0.6f)
+                        tint               = DarkText.copy(alpha = 0.55f),
+                        modifier           = Modifier.size(20.dp)
                     )
                 }
             }
         }
 
-        // ── Today's Goals card ───────────────────────────────────────────────
+        // ── Today's Goals card ──────────────────────────────────────────
         item {
             TodayGoalsCard(
                 completedGoals  = state.completedGoals,
@@ -200,70 +192,72 @@ private fun DashboardContent(
                 overallProgress = state.overallProgress,
                 modifier        = Modifier.padding(horizontal = Dimens.ScreenPaddingH)
             )
+            Spacer(modifier = Modifier.height(SectionGap))
         }
 
-        item { Spacer(modifier = Modifier.height(Dimens.SpaceXl)) }
-
-        // ── PCOS FAQ ─────────────────────────────────────────────────────────
+        // ── PCOS FAQ ────────────────────────────────────────────────────
+        // Figma: "PCOS FAQ" label is SansFont bold (NOT italic serif)
         item {
-            SectionTitle(
-                text     = "PCOS FAQ",
-                modifier = Modifier.padding(horizontal = Dimens.ScreenPaddingH)
+            Text(
+                text       = "PCOS FAQ",
+                fontFamily = SansFont,
+                fontWeight = FontWeight.Bold,
+                color      = DarkText,
+                fontSize   = 18.sp,
+                modifier   = Modifier.padding(
+                    horizontal = Dimens.ScreenPaddingH,
+                    vertical   = 0.dp
+                )
             )
-            Spacer(modifier = Modifier.height(Dimens.SpaceMd))
+            Spacer(modifier = Modifier.height(8.dp))
             FaqPager(faqs = state.faqs)
+            Spacer(modifier = Modifier.height(SectionGap))
         }
 
-        item { Spacer(modifier = Modifier.height(Dimens.SpaceXl)) }
-
-        // ── Quick actions ────────────────────────────────────────────────────
+        // ── Quick Actions (Cycle + Symptom check-in) ────────────────────
         item {
             QuickActionCards(
                 modifier = Modifier.padding(horizontal = Dimens.ScreenPaddingH)
             )
+            Spacer(modifier = Modifier.height(SectionGap))
         }
 
-        item { Spacer(modifier = Modifier.height(Dimens.SpaceXl)) }
-
-        // ── Goal Progress ────────────────────────────────────────────────────
+        // ── Goal Progress ───────────────────────────────────────────────
         item {
             SectionTitle(
                 text     = "Goal Progress",
                 modifier = Modifier.padding(horizontal = Dimens.ScreenPaddingH)
             )
-            Spacer(modifier = Modifier.height(Dimens.SpaceMd))
+            Spacer(modifier = Modifier.height(8.dp))
         }
 
-        item {
-            Card(
-                shape     = CardShape,
-                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-                colors    = CardDefaults.cardColors(containerColor = White),
-                modifier  = Modifier.padding(horizontal = Dimens.ScreenPaddingH)
-            ) {
-                state.goals.forEachIndexed { index, goal ->
-                    GoalRow(
-                        label            = goal.label,
-                        progress         = "${goal.current}/${goal.target} ${goal.unit}",
-                        ringColor        = goal.ringColor,
-                        progressFraction = goal.current.toFloat() / goal.target,
-                        onClick          = { onGoalTap(goal.id) },
-                        showDivider      = index < state.goals.lastIndex
-                    )
-                }
-            }
+        // Each goal is its own separate white card — matches Figma
+        items(state.goals.size) { index ->
+            val goal = state.goals[index]
+            GoalRow(
+                label            = goal.label,
+                progress         = "${goal.current}/${goal.target} ${goal.unit}",
+                ringColor        = goal.ringColor,
+                progressFraction = goal.current.toFloat() / goal.target,
+                icon             = goal.icon,
+                onClick          = { onGoalTap(goal.id) },
+                modifier         = Modifier.padding(
+                    horizontal = Dimens.ScreenPaddingH,
+                    vertical   = 3.dp
+                )
+            )
         }
 
-        item { Spacer(modifier = Modifier.height(Dimens.SpaceXl)) }
+        item { Spacer(modifier = Modifier.height(SectionGap)) }
 
-        // ── Today's tip ──────────────────────────────────────────────────────
+        // ── Today's tip ─────────────────────────────────────────────────
         if (state.tipVisible) {
             item {
                 SectionTitle(
                     text     = "Today's tip",
                     modifier = Modifier.padding(horizontal = Dimens.ScreenPaddingH)
                 )
-                Spacer(modifier = Modifier.height(Dimens.SpaceMd))
+                Spacer(modifier = Modifier.height(8.dp))
                 TodayTipCard(
                     onRemindLater = onRemindLater,
                     onMarkAsDone  = onMarkAsDone,
@@ -277,12 +271,9 @@ private fun DashboardContent(
 }
 
 @Composable
-private fun PlaceholderScreen(
-    title: String,
-    modifier: Modifier = Modifier
-) {
+private fun PlaceholderScreen(title: String, modifier: Modifier = Modifier) {
     Box(
-        modifier        = modifier
+        modifier         = modifier
             .fillMaxSize()
             .background(BackgroundCream),
         contentAlignment = Alignment.Center
@@ -290,11 +281,7 @@ private fun PlaceholderScreen(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             SectionTitle(title)
             Spacer(modifier = Modifier.height(Dimens.SpaceMd))
-            Text(
-                text       = "Coming soon",
-                fontFamily = SansFont,
-                color      = MutedGrey
-            )
+            Text(text = "Coming soon", fontFamily = SansFont, color = MutedGrey)
         }
     }
 }
@@ -304,11 +291,12 @@ private fun PlaceholderScreen(
 private fun HomeScreenPreview() {
     BloomTheme {
         DashboardContent(
-            state         = HomeUiState(
+            state = HomeUiState(
                 userName   = "Sofia",
                 goals      = HomeUiState().goals,
                 faqs       = listOf(
-                    com.bloom.app.data.FaqItem(1, "What exactly is PCOS?", "PCOS stands for polycystic ovary syndrome...")
+                    com.bloom.app.data.FaqItem(1, "What exactly is PCOS?",
+                        "PCOS stands for polycystic ovary syndrome...")
                 ),
                 tipVisible = true
             ),

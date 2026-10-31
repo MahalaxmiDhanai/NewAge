@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bedtime
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -54,14 +55,22 @@ fun TodayTipCard(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Moon icon chip
+            // Moon icon chip — beige/tan background, crescent moon icon, matching Figma
             Box(
-                modifier        = Modifier
+                modifier = Modifier
                     .size(36.dp)
-                    .background(LightPink.copy(alpha = 0.6f), shape = RoundedCornerShape(10.dp)),
+                    .background(
+                        color = androidx.compose.ui.graphics.Color(0xFFD9C9A8),
+                        shape = RoundedCornerShape(10.dp)
+                    ),
                 contentAlignment = Alignment.Center
             ) {
-                Text("🌙", fontSize = 18.sp)
+                Icon(
+                    imageVector        = Icons.Filled.Bedtime,
+                    contentDescription = null,
+                    tint               = TipLabelText,
+                    modifier           = Modifier.size(20.dp)
+                )
             }
             Spacer(modifier = Modifier.width(Dimens.SpaceMd))
             Text(

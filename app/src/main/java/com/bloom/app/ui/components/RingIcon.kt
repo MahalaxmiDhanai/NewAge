@@ -1,61 +1,80 @@
 package com.bloom.app.ui.components
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * Circular ring icon that partially fills based on [progress] (0f..1f).
- * When progress == 1f the ring is fully solid (filled circle + stroke).
+ * Circular ring with a centered icon — matches Figma Goal Progress rings exactly.
+ *
+ * - Draws a faint background ring (color @ 15% alpha)
+ * - Draws a progress arc from top in the ring color
+ * - Centers a small [icon] inside the ring in the same color
  */
 @Composable
 fun RingIcon(
     color: Color,
-    progress: Float,            // 0f to 1f
-    size: Dp = 40.dp,
+    progress: Float,
+    icon: ImageVector,
+    size: Dp        = 42.dp,
     strokeWidth: Dp = 3.dp,
     modifier: Modifier = Modifier
 ) {
-    val clampedProgress = progress.coerceIn(0f, 1f)
-    Canvas(modifier = modifier.size(size)) {
-        val stroke = strokeWidth.toPx()
-        val inset  = stroke / 2f
-        val arcSize = Size(
-            this.size.width  - stroke,
-            this.size.height - stroke
-        )
-        val topLeft = Offset(inset, inset)
+    val clamped = progress.coerceIn(0f, 1f)
 
-        // Background ring (always drawn)
-        drawArc(
-            color       = color.copy(alpha = 0.15f),
-            startAngle  = -90f,
-            sweepAngle  = 360f,
-            useCenter   = false,
-            topLeft     = topLeft,
-            size        = arcSize,
-            style       = Stroke(width = stroke, cap = StrokeCap.Round)
-        )
+    Box(
+        modifier         = modifier.size(size),
+        contentAlignment = Alignment.Center
+    ) {
+        // Ring arc
+        Canvas(modifier = Modifier.size(size)) {
+            val stroke   = strokeWidth.toPx()
+            val inset    = stroke / 2f
+            val arcSize  = Size(this.size.width - stroke, this.size.height - stroke)
+            val topLeft  = Offset(inset, inset)
 
-        // Progress arc
-        if (clampedProgress > 0f) {
+            // Faint background full ring
             drawArc(
-                color       = color,
-                startAngle  = -90f,
-                sweepAngle  = 360f * clampedProgress,
-                useCenter   = false,
-                topLeft     = topLeft,
-                size        = arcSize,
-                style       = Stroke(width = stroke, cap = StrokeCap.Round)
+                color      = color.copy(alpha = 0.15f),
+                startAngle = -90f,
+                sweepAngle = 360f,
+                useCenter  = false,
+                topLeft    = topLeft,
+                size       = arcSize,
+                style      = Stroke(width = stroke, cap = StrokeCap.Round)
             )
+            // Filled progress arc
+            if (clamped > 0f) {
+                drawArc(
+                    color      = color,
+                    startAngle = -90f,
+                    sweepAngle = 360f * clamped,
+                    useCenter  = false,
+                    topLeft    = topLeft,
+                    size       = arcSize,
+                    style      = Stroke(width = stroke, cap = StrokeCap.Round)
+                )
+            }
         }
+
+        // Centered icon in ring color
+        Icon(
+            imageVector        = icon,
+            contentDescription = null,
+            tint               = color,
+            modifier           = Modifier.size(size * 0.44f)
+        )
     }
 }

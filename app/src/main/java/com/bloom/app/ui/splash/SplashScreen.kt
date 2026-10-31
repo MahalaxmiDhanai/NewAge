@@ -55,38 +55,42 @@ fun SplashScreen(
             .navigationBarsPadding(),
         contentAlignment = Alignment.Center
     ) {
-        // Sparkles — scattered positions matching Figma
+        // Sparkles — positions match Figma splash (390×818)
+        // Upper-left gold sparkle
         FourPointSparkle(
             size     = 14.dp,
             color    = Gold,
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .offset(x = 50.dp, y = 100.dp)
+                .offset(x = 52.dp, y = 108.dp)
         )
+        // Upper-right gold sparkle (smaller)
         FourPointSparkle(
             size     = 10.dp,
             color    = Gold,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .offset(x = (-80).dp, y = 140.dp)
+                .offset(x = (-72).dp, y = 148.dp)
         )
+        // Upper-right pink sparkle (smallest)
         FourPointSparkle(
-            size     = 9.dp,
-            color    = LightPink,
+            size     = 8.dp,
+            color    = LightPink.copy(alpha = 0.9f),
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .offset(x = (-55).dp, y = 220.dp)
+                .offset(x = (-52).dp, y = 210.dp)
         )
+        // Lower-left gold sparkle
         FourPointSparkle(
             size     = 12.dp,
             color    = Gold,
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = 48.dp, y = (-140).dp)
+                .offset(x = 52.dp, y = (-130).dp)
         )
 
-        // Centred flower logo with glow
-        FlowerLogo(size = 120.dp, showGlow = true)
+        // Flower — centered, matching Figma (slightly above true centre on tall phones)
+        FlowerLogo(size = 130.dp, showGlow = true)
     }
 
     LaunchedEffect(Unit) {

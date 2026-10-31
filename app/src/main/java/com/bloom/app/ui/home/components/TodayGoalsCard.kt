@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -34,7 +33,6 @@ import com.bloom.app.ui.theme.MutedGrey
 import com.bloom.app.ui.theme.PrimaryBrickRed
 import com.bloom.app.ui.theme.SansFont
 import com.bloom.app.ui.theme.SerifFont
-import com.bloom.app.ui.theme.White
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -46,9 +44,9 @@ fun TodayGoalsCard(
     overallProgress: Float,
     modifier: Modifier = Modifier
 ) {
-    val today = LocalDate.now()
+    val today     = LocalDate.now()
     val formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d", Locale.getDefault())
-    val dateString = today.format(formatter)
+    val dateStr   = today.format(formatter)
 
     Box(
         modifier = modifier
@@ -64,10 +62,16 @@ fun TodayGoalsCard(
             modifier          = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Left side — text content
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(Dimens.SpaceLg)
+                    .padding(
+                        start  = Dimens.SpaceLg,
+                        top    = Dimens.SpaceLg,
+                        bottom = Dimens.SpaceLg,
+                        end    = 0.dp
+                    )
             ) {
                 Text(
                     text       = "Today's Goals",
@@ -75,21 +79,22 @@ fun TodayGoalsCard(
                     fontWeight = FontWeight.Bold,
                     fontStyle  = FontStyle.Italic,
                     color      = PrimaryBrickRed,
-                    fontSize   = 18.sp
+                    fontSize   = 17.sp
                 )
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text       = dateString,
+                    text       = dateStr,
                     fontFamily = SansFont,
                     color      = MutedGrey,
                     fontSize   = 12.sp
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text       = "Let's get blooming",
                     fontFamily = SansFont,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.SemiBold,
                     fontSize   = 13.sp,
-                    color      = PrimaryBrickRed.copy(alpha = 0.8f)
+                    color      = PrimaryBrickRed.copy(alpha = 0.9f)
                 )
                 Text(
                     text       = "$completedGoals of $totalGoals complete",
@@ -97,29 +102,33 @@ fun TodayGoalsCard(
                     color      = MutedGrey,
                     fontSize   = 12.sp
                 )
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(8.dp))
+                // Thin progress bar — 2dp, matching Figma
                 LinearProgressIndicator(
-                    progress    = { overallProgress },
-                    modifier    = Modifier
-                        .fillMaxWidth(0.8f)
-                        .height(4.dp)
-                        .clip(RoundedCornerShape(2.dp)),
-                    color       = PrimaryBrickRed,
-                    trackColor  = PrimaryBrickRed.copy(alpha = 0.2f),
-                    strokeCap   = StrokeCap.Round
+                    progress   = { overallProgress },
+                    modifier   = Modifier
+                        .fillMaxWidth(0.75f)
+                        .height(2.dp)
+                        .clip(RoundedCornerShape(1.dp)),
+                    color      = PrimaryBrickRed,
+                    trackColor = PrimaryBrickRed.copy(alpha = 0.18f),
+                    strokeCap  = StrokeCap.Round
                 )
             }
 
-            // Right side: faded flower + "Start here" label
+            // Right side — faded flower illustration + "Start here" label
             Box(
-                modifier        = Modifier.padding(end = Dimens.SpaceLg),
+                modifier        = Modifier
+                    .padding(end = Dimens.SpaceLg),
                 contentAlignment = Alignment.Center
             ) {
+                // Faded flower background illustration
                 FlowerLogo(
-                    size     = 80.dp,
+                    size     = 90.dp,
                     showGlow = false,
-                    modifier = Modifier.alpha(0.18f)
+                    modifier = Modifier.alpha(0.14f)
                 )
+                // "Start here" italic label over the flower
                 Text(
                     text       = "Start here",
                     fontFamily = SerifFont,
@@ -138,9 +147,9 @@ fun TodayGoalsCard(
 private fun TodayGoalsCardPreview() {
     BloomTheme {
         TodayGoalsCard(
-            completedGoals  = 2,
+            completedGoals  = 0,
             totalGoals      = 5,
-            overallProgress = 0.4f,
+            overallProgress = 0f,
             modifier        = Modifier.padding(Dimens.SpaceLg)
         )
     }

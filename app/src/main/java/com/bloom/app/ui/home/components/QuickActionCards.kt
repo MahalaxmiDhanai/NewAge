@@ -13,100 +13,120 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.outlined.Mood
+import androidx.compose.material.icons.outlined.WaterDrop
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bloom.app.ui.theme.BloomTheme
 import com.bloom.app.ui.theme.CardShape
-import com.bloom.app.ui.theme.Dimens
 import com.bloom.app.ui.theme.DarkText
+import com.bloom.app.ui.theme.Dimens
+import com.bloom.app.ui.theme.LightPink
 import com.bloom.app.ui.theme.MutedGrey
+import com.bloom.app.ui.theme.PrimaryBrickRed
 import com.bloom.app.ui.theme.QuickActionCardBg
 import com.bloom.app.ui.theme.SansFont
 import com.bloom.app.ui.theme.White
 
+/**
+ * Two quick-action rows inside ONE #FBF0EF card, separated by a thin divider.
+ * Figma: Cycle row has a blood-drop icon; Symptom row has a smiley face icon.
+ * Both icons are shown in PrimaryBrickRed inside white rounded chips.
+ */
 @Composable
 fun QuickActionCards(
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
-        QuickActionRow(
-            iconEmoji   = "🩸",
-            title       = "Cycle",
-            subtitle    = "Log your last period date",
-            onClick     = {}
-        )
-        QuickActionRow(
-            iconEmoji   = "😊",
-            title       = "Symptom check-in",
-            subtitle    = "Bloating, skin, mood, sleep quality",
-            onClick     = {}
-        )
+    Card(
+        shape     = CardShape,
+        colors    = CardDefaults.cardColors(containerColor = QuickActionCardBg),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        modifier  = modifier.fillMaxWidth()
+    ) {
+        Column {
+            QuickActionRow(
+                icon     = Icons.Outlined.WaterDrop,   // blood drop — Cycle
+                title    = "Cycle",
+                subtitle = "Log your last period date",
+                onClick  = {}
+            )
+            HorizontalDivider(
+                modifier  = Modifier.padding(horizontal = Dimens.SpaceLg),
+                thickness = 0.5.dp,
+                color     = LightPink.copy(alpha = 0.7f)
+            )
+            QuickActionRow(
+                icon     = Icons.Outlined.Mood,         // smiley — Symptom check-in
+                title    = "Symptom check-in",
+                subtitle = "Bloating, skin, mood, sleep quality",
+                onClick  = {}
+            )
+        }
     }
 }
 
 @Composable
 private fun QuickActionRow(
-    iconEmoji: String,
+    icon: ImageVector,
     title: String,
     subtitle: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        shape    = CardShape,
-        colors   = CardDefaults.cardColors(containerColor = QuickActionCardBg),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        modifier = modifier
+    Row(
+        modifier          = modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
             .clickable { onClick() }
+            .padding(horizontal = Dimens.SpaceLg, vertical = Dimens.SpaceMd),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier          = Modifier
-                .fillMaxWidth()
-                .padding(Dimens.SpaceLg),
-            verticalAlignment = Alignment.CenterVertically
+        // White rounded chip with colored icon — matches Figma
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(White, shape = RoundedCornerShape(12.dp)),
+            contentAlignment = Alignment.Center
         ) {
-            // White icon chip
-            Box(
-                modifier        = Modifier
-                    .size(40.dp)
-                    .background(White, shape = RoundedCornerShape(12.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = iconEmoji, fontSize = 20.sp)
-            }
-            Spacer(modifier = Modifier.width(Dimens.SpaceLg))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text       = title,
-                    fontFamily = SansFont,
-                    fontWeight = FontWeight.SemiBold,
-                    color      = DarkText,
-                    fontSize   = 15.sp
-                )
-                Text(
-                    text       = subtitle,
-                    fontFamily = SansFont,
-                    color      = MutedGrey,
-                    fontSize   = 13.sp
-                )
-            }
             Icon(
-                imageVector        = Icons.Filled.ChevronRight,
+                imageVector        = icon,
                 contentDescription = null,
-                tint               = MutedGrey
+                tint               = PrimaryBrickRed,
+                modifier           = Modifier.size(20.dp)
             )
         }
+        Spacer(modifier = Modifier.width(Dimens.SpaceMd))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text       = title,
+                fontFamily = SansFont,
+                fontWeight = FontWeight.SemiBold,
+                color      = DarkText,
+                fontSize   = 14.sp
+            )
+            Text(
+                text       = subtitle,
+                fontFamily = SansFont,
+                color      = MutedGrey,
+                fontSize   = 12.sp
+            )
+        }
+        Icon(
+            imageVector        = Icons.Filled.ChevronRight,
+            contentDescription = null,
+            tint               = MutedGrey,
+            modifier           = Modifier.size(18.dp)
+        )
     }
 }
 
