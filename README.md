@@ -2,6 +2,8 @@
 
 A complete Android app built with Kotlin + Jetpack Compose (Material 3) for managing PCOS daily wellness goals.
 
+> ✅ **Navigation Fixed:** System back button now properly handles navigation between screens and within onboarding flow. See [NAVIGATION_FIX.md](NAVIGATION_FIX.md) for details.
+
 ---
 
 ## Setup & Build
