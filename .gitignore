@@ -1,0 +1,25 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Kotlin
+*.class
+*.dex
+
+# APKs/AABs
+*.apk
+*.aab
+*.ap_
+
+# Avoid committing real AdMob IDs
+gradle.properties
+
+# Generated files
+app/build/
