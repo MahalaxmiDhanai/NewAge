@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -93,6 +95,7 @@ private fun OnboardingContent(
             .fillMaxSize()
             .background(BackgroundCream)
             .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         // Top row: back button + progress bars
         Row(
@@ -119,16 +122,17 @@ private fun OnboardingContent(
                     )
                 }
                 Spacer(modifier = Modifier.width(Dimens.SpaceSm))
+                OnboardingProgressBars(
+                    currentStep = state.currentStep,
+                    modifier    = Modifier.weight(1f)
+                )
             } else {
-                // Placeholder to keep bar aligned
-                Spacer(modifier = Modifier.size(36.dp))
-                Spacer(modifier = Modifier.width(Dimens.SpaceSm))
+                // Step 1: bars fill the full row, no back button
+                OnboardingProgressBars(
+                    currentStep = state.currentStep,
+                    modifier    = Modifier.fillMaxWidth()
+                )
             }
-
-            OnboardingProgressBars(
-                currentStep = state.currentStep,
-                modifier    = Modifier.weight(1f)
-            )
         }
 
         // Step content

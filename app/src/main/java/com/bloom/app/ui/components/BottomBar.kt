@@ -3,12 +3,11 @@ package com.bloom.app.ui.components
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -38,10 +37,10 @@ data class BottomNavItem(
 )
 
 private val navItems = listOf(
-    BottomNavItem("Dashboard", Icons.Filled.Home,     Icons.Outlined.Home),
-    BottomNavItem("Insights",  Icons.Filled.BarChart, Icons.Outlined.BarChart),
-    BottomNavItem("Learn",     Icons.Filled.MenuBook, Icons.Outlined.MenuBook),
-    BottomNavItem("Settings",  Icons.Filled.Settings, Icons.Outlined.Settings)
+    BottomNavItem("Dashboard", Icons.Filled.Home,      Icons.Outlined.Home),
+    BottomNavItem("Insights",  Icons.Filled.BarChart,  Icons.Outlined.BarChart),
+    BottomNavItem("Learn",     Icons.Filled.Book,      Icons.Filled.Book),
+    BottomNavItem("Settings",  Icons.Filled.Settings,  Icons.Outlined.Settings)
 )
 
 @Composable
