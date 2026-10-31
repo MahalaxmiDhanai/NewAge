@@ -15,13 +15,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -81,6 +85,11 @@ fun HomeScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     var selectedNavIndex by rememberSaveable { mutableIntStateOf(0) }
 
+    // Handle system back button - if not on Dashboard, go back to Dashboard
+    androidx.activity.compose.BackHandler(enabled = selectedNavIndex != 0) {
+        selectedNavIndex = 0
+    }
+
     LaunchedEffect(state.snackbarMessage) {
         state.snackbarMessage?.let {
             snackbarHostState.showSnackbar(it)
@@ -117,7 +126,13 @@ fun HomeScreen(
                 modifier      = Modifier.padding(innerPadding)
             )
             else -> PlaceholderScreen(
-                title    = when (selectedNavIndex) { 1 -> "Insights"; 2 -> "Learn"; 3 -> "Settings"; else -> "" },
+                title    = when (selectedNavIndex) {
+                    1 -> "Insights"
+                    2 -> "Learn"
+                    3 -> "Settings"
+                    else -> ""
+                },
+                onBack   = { selectedNavIndex = 0 }, // Back to Dashboard
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -270,18 +285,56 @@ private fun DashboardContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PlaceholderScreen(title: String, modifier: Modifier = Modifier) {
-    Box(
-        modifier         = modifier
-            .fillMaxSize()
-            .background(BackgroundCream),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            SectionTitle(title)
-            Spacer(modifier = Modifier.height(Dimens.SpaceMd))
-            Text(text = "Coming soon", fontFamily = SansFont, color = MutedGrey)
+private fun PlaceholderScreen(
+    title: String,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text       = title,
+                        fontFamily = SerifFont,
+                        fontStyle  = FontStyle.Italic,
+                        fontWeight = FontWeight.Medium,
+                        color      = DarkText
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector        = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint               = DarkText
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = BackgroundCream
+                )
+            )
+        },
+        containerColor = BackgroundCream
+    ) { innerPadding ->
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .background(BackgroundCream),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text       = "Coming soon",
+                    fontFamily = SansFont,
+                    fontSize   = 18.sp,
+                    color      = MutedGrey
+                )
+            }
         }
     }
 }
