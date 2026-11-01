@@ -67,41 +67,42 @@ fun FlowerLogo(
 
         // ── Petal geometry ────────────────────────────────────────────────
         //
-        // Figma shows asymmetric petals:
-        //   Vertical petals (top/bottom): halfW = 0.42r, halfH = 0.78r
-        //   Horizontal petals (left/right): halfW = 0.78r, halfH = 0.42r
+        // Figma 512×512 logo shows 4 rounded petals forming a flower:
+        // - All petals are similar rounded shapes (not highly elongated)
+        // - Petal width ~= petal height (nearly circular, slightly oval)
+        // - Petals positioned so they touch at center, creating crosshair pattern
         //
-        // Center offset (how far petal centre is from flower centre): 0.38r
-        // This creates the interlocking overlap seen in the Figma.
+        // Measurements from Figma:
+        // - Petal half-width: ~0.52r
+        // - Petal half-height: ~0.64r (slightly taller than wide for vertical petals)
+        // - Petal offset from center: ~0.48r
 
-        val vertHalfW = r * 0.42f
-        val vertHalfH = r * 0.78f
-        val horizHalfW = r * 0.78f
-        val horizHalfH = r * 0.42f
-        val petalOffset = r * 0.38f
+        val petalHalfW = r * 0.52f
+        val petalHalfH = r * 0.64f
+        val petalOffset = r * 0.48f
 
-        // Top petal
+        // Top petal (vertical orientation - taller)
         drawOvalPetal(
             cx = cx, cy = cy - petalOffset,
-            halfW = vertHalfW, halfH = vertHalfH,
+            halfW = petalHalfW, halfH = petalHalfH,
             color = PrimaryBrickRed
         )
-        // Bottom petal
+        // Bottom petal (vertical orientation - taller)
         drawOvalPetal(
             cx = cx, cy = cy + petalOffset,
-            halfW = vertHalfW, halfH = vertHalfH,
+            halfW = petalHalfW, halfH = petalHalfH,
             color = PrimaryBrickRed
         )
-        // Left petal
+        // Left petal (horizontal orientation - wider)
         drawOvalPetal(
             cx = cx - petalOffset, cy = cy,
-            halfW = horizHalfW, halfH = horizHalfH,
+            halfW = petalHalfH, halfH = petalHalfW,  // Swap W/H for horizontal
             color = PrimaryBrickRed
         )
-        // Right petal
+        // Right petal (horizontal orientation - wider)
         drawOvalPetal(
             cx = cx + petalOffset, cy = cy,
-            halfW = horizHalfW, halfH = horizHalfH,
+            halfW = petalHalfH, halfH = petalHalfW,  // Swap W/H for horizontal
             color = PrimaryBrickRed
         )
 
