@@ -33,8 +33,8 @@ import com.bloom.app.ui.theme.SansFont
 import com.bloom.app.ui.theme.White
 
 /**
- * Each goal is its own white card matching the Figma —
- * ring with icon on left, label + progress text, chevron on right.
+ * Goal card layout from Figma: ring icon (left) + label/progress + chevron (right).
+ * Each goal gets its own white card with subtle elevation.
  */
 @Composable
 fun GoalRow(

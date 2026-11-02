@@ -17,11 +17,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * Circular ring with a centered icon — matches Figma Goal Progress rings exactly.
+ * Circular progress ring with centered icon (matches Figma Goal Progress design).
  *
- * - Draws a faint background ring (color @ 15% alpha)
- * - Draws a progress arc from top in the ring color
- * - Centers a small [icon] inside the ring in the same color
+ * - Background ring at 15% opacity
+ * - Progress arc starting from top
+ * - Icon centered inside, same color as ring
  */
 @Composable
 fun RingIcon(

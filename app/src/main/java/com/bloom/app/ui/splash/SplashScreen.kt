@@ -28,15 +28,13 @@ private const val MIN_SPLASH_MS   = 1_200L
 private const val AD_WAIT_TIMEOUT = 3_000L
 
 /**
- * Compose splash screen.
+ * Splash screen with conditional App Open Ad flow.
  *
- * Flow:
- *  First-time user  → wait MIN_SPLASH_MS → Onboarding (NO ad ever)
- *  Returning user   → wait for ad (up to AD_WAIT_TIMEOUT) → show ad → Home
- *                     OR navigate to Home immediately if no ad loads in time
+ * First-time users: wait 1.2s → onboarding (no ad)
+ * Returning users: wait up to 3s for ad → show ad → home
  *
- * The DataStore is read via Flow.first() so we always get the real persisted
- * value, not just the in-memory cache (which starts false on cold boot).
+ * DataStore read via Flow.first() guarantees we get the actual persisted value,
+ * not the in-memory cache (which defaults to false on cold start).
  */
 @Composable
 fun SplashScreen(
@@ -96,22 +94,22 @@ fun SplashScreen(
     LaunchedEffect(Unit) {
         val start = System.currentTimeMillis()
 
-        // Read the real persisted onboarding state from DataStore (not just the cache).
-        // flow.first() suspends only until the first emission, typically < 50 ms.
+        // Read persisted onboarding state from DataStore.
+        // first() suspends until first emission (~50ms), not just reading the cache.
         val onboardingDone = userRepository.isOnboardingComplete.first()
-        // Also update the in-memory cache so AppOpenAdManager is correct
+        // Update in-memory cache so AppOpenAdManager has correct state
         userRepository.updateOnboardingCache(onboardingDone)
 
-        // Ensure we hold the splash for at least MIN_SPLASH_MS
+        // Hold splash for minimum duration
         val elapsed = System.currentTimeMillis() - start
         if (elapsed < MIN_SPLASH_MS) delay(MIN_SPLASH_MS - elapsed)
 
         if (!onboardingDone) {
-            // ── First-time user: no ad, go straight to onboarding ──────────
+            // First-time user: no ad, straight to onboarding
             onNavigateToOnboarding()
         } else {
-            // ── Returning user: try to show App Open Ad ─────────────────────
-            // Wait up to AD_WAIT_TIMEOUT for the ad to finish loading.
+            // Returning user: try to show App Open Ad
+            // Wait up to 3s for ad to load
             val adReady = withTimeoutOrNull(AD_WAIT_TIMEOUT) {
                 while (!appOpenAdManager.isAdReady()) {
                     delay(100)
@@ -120,8 +118,8 @@ fun SplashScreen(
             } ?: false
 
             if (adReady) {
-                // Mark that we are handling the cold-start show so the
-                // ProcessLifecycleOwner.onStart callback does not show a second ad.
+                // Mark cold-start handled to prevent ProcessLifecycleOwner
+                // from showing a duplicate ad on its onStart callback.
                 appOpenAdManager.markColdStartHandled()
 
                 val activity = context as? Activity

@@ -9,18 +9,14 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * Tests AppOpenAdManager eligibility logic.
+ * Tests for AppOpenAdManager eligibility logic.
  *
- * Eligibility rule: onboardingCompletedCache.value must be true.
- * We test this rule directly rather than subclassing AppOpenAdManager
- * (which is final by design).
- *
- * The rule is extracted into a standalone helper to keep it testable
- * without a real Context or AdMob SDK.
+ * Rule: onboardingCompletedCache.value must be true.
+ * Tests the rule directly (AppOpenAdManager is final and needs Context/AdMob SDK).
  */
 class AppOpenAdManagerEligibilityTest {
 
-    // ── Extracted eligibility rule (mirrors AppOpenAdManager.isEligible) ──
+    // Eligibility check (mirrors AppOpenAdManager.isEligible)
     private fun isEligible(userRepository: UserRepository): Boolean =
         userRepository.onboardingCompletedCache.value
 

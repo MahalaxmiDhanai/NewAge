@@ -17,8 +17,8 @@ import com.bloom.app.ui.theme.LightPink
 import com.bloom.app.ui.theme.PrimaryBrickRed
 
 /**
- * Four segmented progress bars for the onboarding flow.
- * [currentStep] is 1-based (1..4).
+ * Onboarding progress indicator (4 segmented bars).
+ * @param currentStep 1-based index (1..4)
  */
 @Composable
 fun OnboardingProgressBars(

@@ -10,11 +10,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * Unit tests for OnboardingPreferences logic.
+ * Tests for OnboardingPreferences (stable key names and default values).
  *
- * We test the key names (which must be stable across installs) and
- * the default-value logic used throughout the codebase —
- * without needing a real Context or DataStore instance.
+ * Validates the persistence contract without needing a real Context or DataStore.
  */
 class OnboardingPreferencesTest {
 

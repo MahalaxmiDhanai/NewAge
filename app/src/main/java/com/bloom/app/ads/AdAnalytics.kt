@@ -3,8 +3,8 @@ package com.bloom.app.ads
 import android.util.Log
 
 /**
- * Analytics interface — swap the implementation for Firebase or any other
- * analytics provider without touching call sites.
+ * Analytics interface for ad events.
+ * Swap implementation to Firebase/Amplitude without changing call sites.
  */
 interface AdAnalytics {
     fun log(event: String, params: Map<String, Any> = emptyMap())

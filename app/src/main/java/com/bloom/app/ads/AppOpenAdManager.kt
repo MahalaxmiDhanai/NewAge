@@ -18,17 +18,16 @@ import com.bloom.app.data.UserRepository
 import java.lang.ref.WeakReference
 
 /**
- * Manages App Open Ad loading and display.
+ * App Open Ad manager with lifecycle-aware loading and display.
  *
- * Lifecycle:
- * - Registered with ProcessLifecycleOwner to respond to app foreground events.
- * - Registered as ActivityLifecycleCallbacks to track the current Activity.
+ * Hooks into ProcessLifecycleOwner (foreground events) and ActivityLifecycleCallbacks
+ * (track current Activity reference).
  *
- * Eligibility rules:
- * - Onboarding must be complete (non-blocking, uses cached StateFlow value).
- * - Not showing another ad.
- * - Ad is loaded and not expired (> 4 hours old).
- * - Not the cold-start show (prevented by coldStartHandled flag).
+ * Eligibility:
+ * - Onboarding complete (checked via cached StateFlow, non-blocking)
+ * - No ad currently showing
+ * - Ad loaded and fresh (< 4 hours old)
+ * - Cold-start already handled (coldStartHandled flag prevents duplicate)
  */
 class AppOpenAdManager(
     private val context: Context,
@@ -104,8 +103,8 @@ class AppOpenAdManager(
     // ── Ad showing ────────────────────────────────────────────────────────
 
     /**
-     * Shows the ad if available and eligible, then calls [onComplete].
-     * Calls [onComplete] immediately if the ad cannot/should not be shown.
+     * Show ad if available and eligible, then invoke [onComplete].
+     * If ad can't/shouldn't be shown, [onComplete] is called immediately.
      */
     fun showAdIfAvailable(activity: Activity, onComplete: () -> Unit) {
         if (isShowingAd) {
@@ -164,7 +163,7 @@ class AppOpenAdManager(
 
     // ── Cold-start helpers ────────────────────────────────────────────────
 
-    /** Called from SplashScreen after ~3 s timeout. */
+    /** Mark cold-start handled (called from SplashScreen after 3s timeout). */
     fun markColdStartHandled() {
         coldStartHandled = true
     }
@@ -173,7 +172,7 @@ class AppOpenAdManager(
         coldStartHandled = false
     }
 
-    /** Returns true if an ad is ready to show immediately (no wait). */
+    /** Check if ad is ready to show immediately (no waiting required). */
     fun isAdReady(): Boolean = appOpenAd != null && !isAdExpired() && !isLoadingAd
 
     // ── DefaultLifecycleObserver — ProcessLifecycleOwner ─────────────────

@@ -40,9 +40,9 @@ import com.bloom.app.ui.theme.SansFont
 import com.bloom.app.ui.theme.White
 
 /**
- * Two quick-action rows inside ONE #FBF0EF card, separated by a thin divider.
- * Figma: Cycle row has a blood-drop icon; Symptom row has a smiley face icon.
- * Both icons are shown in PrimaryBrickRed inside white rounded chips.
+ * Quick action card with two rows (Cycle + Symptom check-in).
+ * Figma design: #FBF0EF background, blood-drop and smiley icons
+ * in white rounded chips, thin divider between rows.
  */
 @Composable
 fun QuickActionCards(

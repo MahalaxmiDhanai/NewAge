@@ -28,12 +28,12 @@ import com.google.android.gms.ads.LoadAdError
 private enum class BannerAdState { Idle, Loaded, Failed }
 
 /**
- * Adaptive banner ad composable.
+ * Adaptive banner ad that adjusts to screen width.
  *
- * - Width is computed from the device screen width (no hardcoded value).
- * - Height is reserved only after the ad loads to avoid content jumping.
- * - Slot collapses to zero height on failure — no empty gap.
- * - Pauses/resumes/destroys the AdView with the host lifecycle.
+ * - Width computed from device screen (no hardcoded dimensions)
+ * - Height reserved only after load (prevents layout jumps)
+ * - Collapses to 0dp on failure (no empty gaps)
+ * - Lifecycle-aware (pause/resume/destroy with host)
  */
 @Composable
 fun BannerAdView(

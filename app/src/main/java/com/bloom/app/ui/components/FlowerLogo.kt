@@ -20,17 +20,16 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 /**
- * Bloom flower logo — matches Figma exactly.
+ * Bloom flower logo from Figma (512×512 design).
  *
- * The Figma logo (512×512) shows:
- *  - Top/bottom petals: tall vertical ovals, more elongated height-wise
- *  - Left/right petals: wide horizontal ovals, more elongated width-wise
- *  - Petals interlock at center — large overlap
- *  - Gold center circle ~22% of flower radius
- *  - Soft pink radial glow tightly hugging the petals
+ * Design notes:
+ *  - Top/bottom petals: vertical ovals (0.52r × 0.64r)
+ *  - Left/right petals: horizontal ovals (swapped dimensions)
+ *  - Gold center circle at 26% of radius
+ *  - Pink radial glow extends 55% beyond flower
  *
- * [size] = diameter of the flower body (excluding glow).
- * [showGlow] = whether to draw the radial glow (splash + onboarding step 1).
+ * @param size Flower diameter (excluding glow)
+ * @param showGlow Show radial halo (used on splash/onboarding)
  */
 @Composable
 fun FlowerLogo(
@@ -116,9 +115,8 @@ fun FlowerLogo(
 }
 
 /**
- * Draw an ellipse (oval petal) centered at (cx, cy) using a cubic bezier
- * approximation — gives the smooth rounded petal look from the Figma.
- * κ = 0.5523 is the standard circle-to-bezier constant.
+ * Draw an oval petal centered at (cx, cy) using cubic bezier curves.
+ * κ = 0.5523 is the standard circle-to-bezier constant for smooth curves.
  */
 private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawOvalPetal(
     cx: Float, cy: Float,
