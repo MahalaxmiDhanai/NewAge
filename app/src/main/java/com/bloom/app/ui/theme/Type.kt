@@ -2,55 +2,47 @@ package com.bloom.app.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.googlefonts.Font
-import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.sp
 import com.bloom.app.R
 
-private val provider = GoogleFont.Provider(
-    providerAuthority = "com.google.android.gms.fonts",
-    providerPackage   = "com.google.android.gms",
-    certificates      = R.array.com_google_android_gms_fonts_certs
-)
-
 val SerifFont: FontFamily = FontFamily(
     Font(
-        googleFont     = GoogleFont("Fraunces"),
-        fontProvider   = provider,
-        weight         = FontWeight.Normal,
-        style          = FontStyle.Italic
+        resId  = R.font.fraunces_italic,
+        weight = FontWeight.Normal,
+        style  = FontStyle.Italic
     ),
     Font(
-        googleFont     = GoogleFont("Fraunces"),
-        fontProvider   = provider,
-        weight         = FontWeight.Bold,
-        style          = FontStyle.Italic
+        resId  = R.font.fraunces_italic,
+        weight = FontWeight.SemiBold,
+        style  = FontStyle.Italic
+    ),
+    Font(
+        resId  = R.font.fraunces_italic,
+        weight = FontWeight.Bold,
+        style  = FontStyle.Italic
     )
 )
 
 val SansFont: FontFamily = FontFamily(
     Font(
-        googleFont   = GoogleFont("Plus Jakarta Sans"),
-        fontProvider = provider,
-        weight       = FontWeight.Normal
+        resId  = R.font.plus_jakarta_sans,
+        weight = FontWeight.Normal
     ),
     Font(
-        googleFont   = GoogleFont("Plus Jakarta Sans"),
-        fontProvider = provider,
-        weight       = FontWeight.Medium
+        resId  = R.font.plus_jakarta_sans,
+        weight = FontWeight.Medium
     ),
     Font(
-        googleFont   = GoogleFont("Plus Jakarta Sans"),
-        fontProvider = provider,
-        weight       = FontWeight.SemiBold
+        resId  = R.font.plus_jakarta_sans,
+        weight = FontWeight.SemiBold
     ),
     Font(
-        googleFont   = GoogleFont("Plus Jakarta Sans"),
-        fontProvider = provider,
-        weight       = FontWeight.Bold
+        resId  = R.font.plus_jakarta_sans,
+        weight = FontWeight.Bold
     )
 )
 

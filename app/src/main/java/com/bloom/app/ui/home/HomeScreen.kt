@@ -64,8 +64,8 @@ import com.bloom.app.ui.theme.MutedGrey
 import com.bloom.app.ui.theme.SansFont
 import com.bloom.app.ui.theme.SerifFont
 
-// Figma gap between sections = 14dp
-private val SectionGap = 14.dp
+// Figma gap between sections
+private val SectionGap = Dimens.ItemGap  // 14.dp
 
 @Composable
 fun HomeScreen(
@@ -187,13 +187,13 @@ private fun DashboardContent(
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
-                        .background(LightPink)
+                        .background(androidx.compose.ui.graphics.Color(0xFFF3DEDC))  // AvatarBg
                 ) {
                     Icon(
                         imageVector        = Icons.Filled.Person,
                         contentDescription = "Profile",
-                        tint               = DarkText.copy(alpha = 0.55f),
-                        modifier           = Modifier.size(20.dp)
+                        tint               = DarkText.copy(alpha = 0.6f),
+                        modifier           = Modifier.size(22.dp)
                     )
                 }
             }
@@ -211,18 +211,10 @@ private fun DashboardContent(
         }
 
         // ── PCOS FAQ ────────────────────────────────────────────────────
-        // Figma: "PCOS FAQ" label is SansFont bold (NOT italic serif)
         item {
-            Text(
-                text       = "PCOS FAQ",
-                fontFamily = SansFont,
-                fontWeight = FontWeight.Bold,
-                color      = DarkText,
-                fontSize   = 18.sp,
-                modifier   = Modifier.padding(
-                    horizontal = Dimens.ScreenPaddingH,
-                    vertical   = 0.dp
-                )
+            SectionTitle(
+                text     = "PCOS FAQ",
+                modifier = Modifier.padding(horizontal = Dimens.ScreenPaddingH)
             )
             Spacer(modifier = Modifier.height(8.dp))
             FaqPager(faqs = state.faqs)
@@ -256,11 +248,11 @@ private fun DashboardContent(
                 progressFraction = goal.current.toFloat() / goal.target,
                 icon             = goal.icon,
                 onClick          = { onGoalTap(goal.id) },
-                modifier         = Modifier.padding(
-                    horizontal = Dimens.ScreenPaddingH,
-                    vertical   = 3.dp
-                )
+                modifier         = Modifier.padding(horizontal = Dimens.ScreenPaddingH)
             )
+            if (index < state.goals.size - 1) {
+                Spacer(modifier = Modifier.height(Dimens.ItemGap))
+            }
         }
 
         item { Spacer(modifier = Modifier.height(SectionGap)) }

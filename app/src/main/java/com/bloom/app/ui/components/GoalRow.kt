@@ -50,7 +50,7 @@ fun GoalRow(
     Card(
         shape     = CardShape,
         colors    = CardDefaults.cardColors(containerColor = White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier  = modifier
             .fillMaxWidth()
             .clickable { onClick() }

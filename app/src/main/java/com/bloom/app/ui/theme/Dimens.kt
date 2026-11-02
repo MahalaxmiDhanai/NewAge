@@ -16,6 +16,9 @@ object Dimens {
     val ScreenPaddingH = 20.dp   // Horizontal screen padding
     val CardElevation  = 2.dp
     val ButtonHeight   = 56.dp
+    
+    // Figma spacing token: 14dp gap between cards/rows (Home screen)
+    val ItemGap = 14.dp
 
     val BottomNavHeight = 64.dp
     val BannerSlotPaddingV = 6.dp

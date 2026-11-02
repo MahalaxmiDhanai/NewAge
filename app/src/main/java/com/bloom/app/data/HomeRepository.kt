@@ -3,7 +3,7 @@ package com.bloom.app.data
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bedtime
 import androidx.compose.material.icons.outlined.DirectionsRun
-import androidx.compose.material.icons.outlined.LocalDining
+import androidx.compose.material.icons.outlined.Restaurant
 import androidx.compose.material.icons.outlined.SelfImprovement
 import androidx.compose.material.icons.outlined.WaterDrop
 import androidx.compose.ui.graphics.Color
@@ -65,7 +65,7 @@ class HomeRepository {
             current   = 0,
             target    = 3,
             ringColor = PrimaryBrickRed,
-            icon      = Icons.Outlined.LocalDining      // fork & knife — Meals
+            icon      = Icons.Outlined.Restaurant       // fork & spoon — Meals
         ),
         GoalItem(
             id        = GoalId.MOVEMENT,

@@ -37,7 +37,8 @@ import com.bloom.app.ui.theme.PillShape
 import com.bloom.app.ui.theme.SansFont
 import com.bloom.app.ui.theme.TipCardBg
 import com.bloom.app.ui.theme.TipLabelText
-import com.bloom.app.ui.theme.TipSecondaryButton
+import com.bloom.app.ui.theme.MarkAsDoneBg
+import com.bloom.app.ui.theme.RemindMeLaterBg
 import com.bloom.app.ui.theme.White
 
 @Composable
@@ -104,7 +105,7 @@ fun TodayTipCard(
                 onClick = onRemindLater,
                 shape   = PillShape,
                 colors  = ButtonDefaults.buttonColors(
-                    containerColor = TipSecondaryButton,
+                    containerColor = RemindMeLaterBg,
                     contentColor   = DarkText
                 ),
                 modifier = Modifier.weight(1f)
@@ -117,12 +118,12 @@ fun TodayTipCard(
                 )
             }
 
-            // "Mark as done" — solid green
+            // "Mark as done" — solid green with check icon
             Button(
                 onClick = onMarkAsDone,
                 shape   = PillShape,
                 colors  = ButtonDefaults.buttonColors(
-                    containerColor = GoalGreen,
+                    containerColor = MarkAsDoneBg,
                     contentColor   = White
                 ),
                 modifier = Modifier.weight(1f)

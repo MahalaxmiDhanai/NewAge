@@ -3,7 +3,7 @@ package com.bloom.app.ui.home
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bedtime
 import androidx.compose.material.icons.outlined.DirectionsRun
-import androidx.compose.material.icons.outlined.LocalDining
+import androidx.compose.material.icons.outlined.Restaurant
 import androidx.compose.material.icons.outlined.SelfImprovement
 import androidx.compose.material.icons.outlined.WaterDrop
 import com.bloom.app.data.FaqItem
@@ -30,7 +30,7 @@ data class HomeUiState(
 }
 
 private fun defaultGoals() = listOf(
-    GoalItem(GoalId.MEALS,      "Meals",      "meals",   0, 3,  PrimaryBrickRed, Icons.Outlined.LocalDining),
+    GoalItem(GoalId.MEALS,      "Meals",      "meals",   0, 3,  PrimaryBrickRed, Icons.Outlined.Restaurant),
     GoalItem(GoalId.MOVEMENT,   "Movement",   "min",     0, 30, GoalGreen,       Icons.Outlined.DirectionsRun),
     GoalItem(GoalId.WATER,      "Water",      "glasses", 0, 8,  GoalBlue,        Icons.Outlined.WaterDrop),
     GoalItem(GoalId.RELAXATION, "Relaxation", "min",     0, 15, GoalPurple,      Icons.Outlined.SelfImprovement),

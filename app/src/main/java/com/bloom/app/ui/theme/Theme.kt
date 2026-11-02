@@ -19,7 +19,10 @@ private val BloomColorScheme = lightColorScheme(
     onSurfaceVariant = DarkText,
     outline          = LightPink,
     error            = PrimaryBrickRed,
-    onError          = White
+    onError          = White,
+    // Snackbar colors: dark background with light text
+    inverseSurface   = DarkText,
+    inverseOnSurface = BackgroundCream
 )
 
 @Composable

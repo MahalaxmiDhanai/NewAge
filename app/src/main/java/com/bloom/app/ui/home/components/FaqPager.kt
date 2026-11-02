@@ -119,7 +119,7 @@ private fun FaqCard(
                     fontFamily = SansFont,
                     color      = MutedGrey,
                     fontSize   = 13.sp,
-                    maxLines   = 2,
+                    maxLines   = 1,
                     overflow   = TextOverflow.Ellipsis
                 )
             }

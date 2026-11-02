@@ -18,6 +18,9 @@ val QuickActionCardBg = Color(0xFFFBF0EF)
 val TipCardBg        = Color(0xFFF3E7D3)
 val TipSecondaryButton = Color(0xFFE5D9C7)
 val TipLabelText     = Color(0xFF8A5A1E)
+val RemindMeLaterBg  = Color(0xFFE5D9C7)  // Beige button (Today's tip)
+val MarkAsDoneBg     = Color(0xFF71967A)  // Green button (Today's tip)
+val AvatarBg         = Color(0xFFF3DEDC)  // Header avatar background
 
 // ── Goal ring colours ──────────────────────────────────────────────────────
 val GoalGreen   = Color(0xFF71967A)
