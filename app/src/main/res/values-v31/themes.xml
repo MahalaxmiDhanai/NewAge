@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Splash screen theme for API 31+ with instant dismissal -->
+    <style name="Theme.Bloom.Splash" parent="Theme.SplashScreen">
+        <item name="android:windowBackground">@color/splash_bg</item>
+        <item name="windowSplashScreenBackground">@color/splash_bg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_transparent</item>
+        <item name="windowSplashScreenAnimationDuration">0</item>
+        <item name="postSplashScreenTheme">@style/Theme.Bloom</item>
+        <item name="android:statusBarColor">@color/splash_bg</item>
+        <item name="android:navigationBarColor">@color/splash_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

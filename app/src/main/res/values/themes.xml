@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme -->
+    <!-- Base application theme - LIGHT ONLY -->
     <style name="Theme.Bloom" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/splash_bg</item>
+        <item name="android:statusBarColor">@color/splash_bg</item>
+        <item name="android:navigationBarColor">@color/splash_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <!-- Splash screen theme using SplashScreen API -->
+    <!-- Splash screen theme - invisible system splash for seamless transition -->
     <style name="Theme.Bloom.Splash" parent="Theme.SplashScreen">
         <item name="android:windowBackground">@color/splash_bg</item>
         <item name="windowSplashScreenBackground">@color/splash_bg</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_flower</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_transparent</item>
         <item name="postSplashScreenTheme">@style/Theme.Bloom</item>
+        <item name="android:statusBarColor">@color/splash_bg</item>
+        <item name="android:navigationBarColor">@color/splash_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

@@ -40,14 +40,7 @@ class HomeViewModel(
                     goal.copy(current = goal.current + 1)
                 } else goal
             }
-            val updatedGoal = updatedGoals.first { it.id == goalId }
-            val message = when {
-                updatedGoal.current >= updatedGoal.target ->
-                    "${updatedGoal.label} goal complete! 🎉"
-                else ->
-                    "${updatedGoal.label}: ${updatedGoal.current}/${updatedGoal.target} ${updatedGoal.unit}"
-            }
-            state.copy(goals = updatedGoals, snackbarMessage = message)
+            state.copy(goals = updatedGoals)
         }
     }
 
@@ -63,9 +56,5 @@ class HomeViewModel(
 
     fun hideTip() {
         _state.update { it.copy(tipVisible = false) }
-    }
-
-    fun snackbarShown() {
-        _state.update { it.copy(snackbarMessage = null) }
     }
 }

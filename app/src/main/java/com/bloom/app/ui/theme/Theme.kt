@@ -4,6 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
+// App is LIGHT ONLY - always use light scheme regardless of system dark mode
 private val BloomColorScheme = lightColorScheme(
     primary          = PrimaryBrickRed,
     onPrimary        = White,
@@ -19,10 +20,7 @@ private val BloomColorScheme = lightColorScheme(
     onSurfaceVariant = DarkText,
     outline          = LightPink,
     error            = PrimaryBrickRed,
-    onError          = White,
-    // Snackbar colors: dark background with light text
-    inverseSurface   = DarkText,
-    inverseOnSurface = BackgroundCream
+    onError          = White
 )
 
 @Composable

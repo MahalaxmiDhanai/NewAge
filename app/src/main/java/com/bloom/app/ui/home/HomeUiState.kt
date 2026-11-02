@@ -19,8 +19,7 @@ data class HomeUiState(
     val userName: String      = "Sofia",
     val goals: List<GoalItem> = defaultGoals(),
     val faqs: List<FaqItem>   = emptyList(),
-    val tipVisible: Boolean   = true,
-    val snackbarMessage: String? = null
+    val tipVisible: Boolean   = true
 ) {
     val completedGoals: Int get() = goals.count { it.current >= it.target }
     val totalGoals: Int     get() = goals.size

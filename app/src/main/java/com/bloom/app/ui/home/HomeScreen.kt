@@ -22,15 +22,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -82,7 +78,6 @@ fun HomeScreen(
     )
 
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
     var selectedNavIndex by rememberSaveable { mutableIntStateOf(0) }
 
     // Handle system back button - if not on Dashboard, go back to Dashboard
@@ -90,15 +85,7 @@ fun HomeScreen(
         selectedNavIndex = 0
     }
 
-    LaunchedEffect(state.snackbarMessage) {
-        state.snackbarMessage?.let {
-            snackbarHostState.showSnackbar(it)
-            viewModel.snackbarShown()
-        }
-    }
-
     Scaffold(
-        snackbarHost   = { SnackbarHost(snackbarHostState) },
         containerColor = BackgroundCream,
         bottomBar = {
             Column {
