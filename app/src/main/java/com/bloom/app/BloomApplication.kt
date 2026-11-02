@@ -1,6 +1,9 @@
 package com.bloom.app
 
 import android.app.Application
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.bloom.app.ads.AdConfig
 import com.bloom.app.ads.AdAnalytics
@@ -16,7 +19,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-class BloomApplication : Application() {
+class BloomApplication : Application(), LifecycleEventObserver {
 
     // ── Manual DI container ────────────────────────────────────────────────
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -32,6 +35,8 @@ class BloomApplication : Application() {
     lateinit var appOpenAdManager: AppOpenAdManager
         private set
     val adAnalytics: AdAnalytics = LogcatAdAnalytics()
+    
+    private var lastCheckedDate: String? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -62,11 +67,33 @@ class BloomApplication : Application() {
 
         // Register lifecycle observers
         ProcessLifecycleOwner.get().lifecycle.addObserver(appOpenAdManager)
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         registerActivityLifecycleCallbacks(appOpenAdManager)
 
         // Initialize Mobile Ads, then preload App Open Ad
         adsInitializer.initialize(applicationScope) {
             appOpenAdManager.loadAd()
+        }
+    }
+    
+    override fun onStateChanged(source: androidx.lifecycle.LifecycleOwner, event: androidx.lifecycle.Lifecycle.Event) {
+        if (event == androidx.lifecycle.Lifecycle.Event.ON_START) {
+            // App came to foreground - check if date changed
+            checkAndResetIfNewDay()
+        }
+    }
+    
+    private fun checkAndResetIfNewDay() {
+        val today = java.time.LocalDate.now().toString()
+        if (lastCheckedDate != today) {
+            lastCheckedDate = today
+            applicationScope.launch {
+                val savedDate = userRepository.lastProgressDate.first()
+                if (savedDate != null && savedDate != today) {
+                    // New day: reset progress
+                    userRepository.resetDailyProgress(today)
+                }
+            }
         }
     }
 }
