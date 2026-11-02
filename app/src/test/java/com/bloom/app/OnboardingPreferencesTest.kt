@@ -11,8 +11,6 @@ import org.junit.Test
 
 /**
  * Tests for OnboardingPreferences (stable key names and default values).
- *
- * Validates the persistence contract without needing a real Context or DataStore.
  */
 class OnboardingPreferencesTest {
 
