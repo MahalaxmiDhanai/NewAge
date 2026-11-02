@@ -22,11 +22,11 @@ import kotlin.math.sin
 /**
  * Bloom flower logo from Figma (512×512 design).
  *
- * Design notes:
- *  - 4 rounded petals forming a cross (nearly circular, 0.55r × 0.55r)
- *  - 14px gap specification between petals (petals offset 0.40r from center)
+ * Design: 4 elongated oval petals forming a cross
+ *  - Top/bottom petals: tall vertical ovals (0.40r wide × 0.80r tall)
+ *  - Left/right petals: wide horizontal ovals (0.80r wide × 0.40r tall)
+ *  - Petals offset 0.50r from center (14px gap in Figma)
  *  - Gold center circle at 26% of radius
- *  - Pink radial glow extends 55% beyond flower
  *
  * @param size Flower diameter (excluding glow)
  * @param showGlow Show radial halo (used on splash/onboarding)
@@ -66,41 +66,44 @@ fun FlowerLogo(
 
         // ── Petal geometry ────────────────────────────────────────────────
         //
-        // Figma 512×512 logo: 4 rounded petals forming a cross/flower
-        // All petals are nearly circular (not elongated ovals)
-        // Gap of 14px between petals in Figma = minimal spacing at center
+        // Figma 512×512 logo: 4 elongated oval petals forming a cross
+        // Top/bottom petals are TALL (vertical ovals)
+        // Left/right petals are WIDE (horizontal ovals)
+        // Gap of 14px between petals
         //
-        // For 512px canvas with gap=14px:
-        // - Each petal is roughly 180px tall × 160px wide
-        // - Petal dimensions: ~0.55r × 0.55r (nearly circular)
-        // - Offset from center: ~0.40r (petals touch closer to center)
+        // Petal dimensions (measured from Figma):
+        // - Vertical petals (top/bottom): ~100px wide × 200px tall
+        // - Horizontal petals (left/right): ~200px wide × 100px tall
+        // - In relative units: 0.40r × 0.80r for vertical, swapped for horizontal
 
-        val petalHalfW = r * 0.55f
-        val petalHalfH = r * 0.55f
-        val petalOffset = r * 0.40f
+        val vertPetalHalfW = r * 0.40f   // Narrow width for vertical petals
+        val vertPetalHalfH = r * 0.80f   // Tall height for vertical petals
+        val horizPetalHalfW = r * 0.80f  // Wide width for horizontal petals
+        val horizPetalHalfH = r * 0.40f  // Short height for horizontal petals
+        val petalOffset = r * 0.50f      // Distance from center
 
-        // Top petal
+        // Top petal (tall vertical oval)
         drawOvalPetal(
             cx = cx, cy = cy - petalOffset,
-            halfW = petalHalfW, halfH = petalHalfH,
+            halfW = vertPetalHalfW, halfH = vertPetalHalfH,
             color = PrimaryBrickRed
         )
-        // Bottom petal
+        // Bottom petal (tall vertical oval)
         drawOvalPetal(
             cx = cx, cy = cy + petalOffset,
-            halfW = petalHalfW, halfH = petalHalfH,
+            halfW = vertPetalHalfW, halfH = vertPetalHalfH,
             color = PrimaryBrickRed
         )
-        // Left petal
+        // Left petal (wide horizontal oval)
         drawOvalPetal(
             cx = cx - petalOffset, cy = cy,
-            halfW = petalHalfW, halfH = petalHalfH,
+            halfW = horizPetalHalfW, halfH = horizPetalHalfH,
             color = PrimaryBrickRed
         )
-        // Right petal
+        // Right petal (wide horizontal oval)
         drawOvalPetal(
             cx = cx + petalOffset, cy = cy,
-            halfW = petalHalfW, halfH = petalHalfH,
+            halfW = horizPetalHalfW, halfH = horizPetalHalfH,
             color = PrimaryBrickRed
         )
 
